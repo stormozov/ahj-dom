@@ -1,6 +1,7 @@
 export default class BoardManager {
   #boardSize;
   #BoardCells;
+  #currentPosition = null;
 
   constructor(boardSize = 4) {
     this.#boardSize = boardSize ** 2;
@@ -21,7 +22,9 @@ export default class BoardManager {
     }
 
     this.#BoardCells = document.querySelectorAll(".cell");
-    this.#addPersonToCell(this.#getRandomPosition());
+    const startPosition = this.#getRandomPosition();
+    this.#addPersonToCell(startPosition);
+    this.#currentPosition = startPosition;
   }
 
   /**
@@ -31,11 +34,21 @@ export default class BoardManager {
    */
   movingPersonThroughTheCells(_interval) {
     setInterval(() => {
-      this.#clearCells();
-      this.#addPersonToCell(this.#getRandomPosition());
+      if (this.#currentPosition !== null) {
+        this.#BoardCells[this.#currentPosition].innerHTML = "";
+      }
+
+      const newPosition = this.#getRandomPosition();
+      this.#addPersonToCell(newPosition);
+      this.#currentPosition = newPosition;
     }, _interval);
   }
 
+  /**
+   * Возвращает случайную позицию
+   *
+   * @returns {number}
+   */
   #getRandomPosition() {
     return Math.floor(Math.random() * this.boardSize);
   }
@@ -49,14 +62,5 @@ export default class BoardManager {
     const person = document.createElement("div");
     person.classList.add("person");
     this.#BoardCells[position].appendChild(person);
-  }
-
-  /**
-   * Очищает контент внутри всех ячеек поля
-   */
-  #clearCells() {
-    this.#BoardCells.forEach((cell) => {
-      cell.innerHTML = "";
-    });
   }
 }
