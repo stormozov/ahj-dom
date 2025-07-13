@@ -6,9 +6,11 @@ import BoardManager from "./BoardManager";
 export default class GoblinGame {
   #boardManager;
   #personMovingInterval;
+  #boardSelector;
 
-  constructor() {
-    this.#boardManager = new BoardManager(4);
+  constructor(boardSelector = ".board") {
+    this.#boardSelector = boardSelector;
+    this.#boardManager = new BoardManager(4, this.#boardSelector);
     this.#personMovingInterval = 1000;
   }
 

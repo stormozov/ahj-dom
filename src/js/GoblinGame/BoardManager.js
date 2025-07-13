@@ -1,27 +1,37 @@
 export default class BoardManager {
+  #board;
   #boardSize;
-  #BoardCells;
+  #boardCells;
   #currentPosition = null;
 
-  constructor(boardSize = 4) {
+  constructor(boardSize = 4, boardSelector) {
+    this.#board = document.querySelector(boardSelector);
     this.#boardSize = boardSize ** 2;
-    this.#BoardCells = [];
+    this.#boardCells = [];
   }
 
+  /**
+   * Возвращает размер игрового поля
+   *
+   * @returns {number} Размер игрового поля
+   */
   get boardSize() {
     return this.#boardSize;
   }
 
+  /**
+   * Отрисовывает игровое поле
+   */
   drawBoard() {
     const boardSize = this.boardSize;
 
     for (let i = 0; i < boardSize; i++) {
       const cell = document.createElement("div");
       cell.classList.add("cell");
-      document.querySelector(".board").appendChild(cell);
+      if (this.#board) this.#board.appendChild(cell);
     }
 
-    this.#BoardCells = document.querySelectorAll(".cell");
+    this.#boardCells = document.querySelectorAll(".cell");
     const startPosition = this.#getRandomPosition();
     this.#addPersonToCell(startPosition);
     this.#currentPosition = startPosition;
@@ -35,7 +45,11 @@ export default class BoardManager {
   movingPersonThroughTheCells(_interval) {
     setInterval(() => {
       if (this.#currentPosition !== null) {
-        this.#BoardCells[this.#currentPosition].innerHTML = "";
+        if (this.#boardCells[this.#currentPosition]) {
+          this.#boardCells[this.#currentPosition]
+            .querySelector(".person")
+            .remove();
+        }
       }
 
       const newPosition = this.#getRandomPosition();
@@ -61,6 +75,9 @@ export default class BoardManager {
   #addPersonToCell(position) {
     const person = document.createElement("div");
     person.classList.add("person");
-    this.#BoardCells[position].appendChild(person);
+
+    if (this.#boardCells[position]) {
+      this.#boardCells[position].appendChild(person);
+    }
   }
 }
