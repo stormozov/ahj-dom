@@ -4,9 +4,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   target: "web",
+  entry: {
+    main: "./src/index.js",
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
     publicPath: "",
+    filename: "[name].bundle.js",
+    clean: true,
   },
   module: {
     rules: [
@@ -38,7 +43,23 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: "./src/index.html",
-      filename: "./index.html",
+      filename: "index.html",
+      chunks: ["main"],
+    }),
+    new HtmlWebPackPlugin({
+      template: "./src/pages/goblin.html",
+      filename: "goblin.html",
+      chunks: ["main"],
+    }),
+    new HtmlWebPackPlugin({
+      template: "./src/pages/data-attrs-sorting.html",
+      filename: "data-attrs-sorting.html",
+      chunks: ["main"],
+    }),
+    new HtmlWebPackPlugin({
+      template: "./src/pages/in-memory-sorting.html",
+      filename: "in-memory-sorting.html",
+      chunks: ["main"],
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
