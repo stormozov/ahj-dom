@@ -1,5 +1,6 @@
-import "./css/style.css";
+import "./css/goblin.css";
+import "./css/in-memory-sorting.css";
+import "./css/main-ui.css";
+import "./css/styles.css";
 
 import "./js/app";
-
-// TODO: write your code in app.js
