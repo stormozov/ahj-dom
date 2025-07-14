@@ -10,3 +10,7 @@
   width: 720px;
   margin: 0 auto;
 }
+
+.table caption {
+  margin-bottom: 10px;
+}

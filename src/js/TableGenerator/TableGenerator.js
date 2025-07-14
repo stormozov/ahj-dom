@@ -21,14 +21,21 @@ export default class TableGenerator {
   #sortedTableContent;
 
   /**
+   * @private
+   * @type {string} - Заголовок таблицы.
+   */
+  #caption;
+
+  /**
    * Конструктор класса TableGenerator.
    *
    * @param {HTMLElement} tableWrapper - DOM-элемент для размещения таблицы.
    * @param {Array<Object>} tableContent - Массив объектов с данными для таблицы.
    */
-  constructor(tableWrapper, tableContent) {
+  constructor(tableWrapper, tableContent, caption) {
     this.#tableWrapper = tableWrapper;
     this.#tableContent = tableContent;
+    this.#caption = caption;
 
     this.#sortingData();
   }
@@ -71,6 +78,7 @@ export default class TableGenerator {
     const tbody = document.createElement("tbody");
 
     this.#tableWrapper.append(table);
+    table.append(this.#generateCaption(this.#caption));
     table.append(this.#generateTableHeader());
     table.append(tbody);
     this.#tableContent.forEach((data) => {
@@ -127,6 +135,18 @@ export default class TableGenerator {
     row.append(...cells);
 
     return row;
+  }
+
+  /**
+   * Генерация caption таблицы.
+   *
+   * @private
+   * @returns {HTMLElement} - Сгенерированный элемент caption.
+   */
+  #generateCaption(captionText) {
+    const caption = document.createElement("caption");
+    caption.textContent = captionText;
+    return caption;
   }
 
   /**
